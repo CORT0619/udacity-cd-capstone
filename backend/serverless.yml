@@ -1,0 +1,182 @@
+service:
+  name: uacity-gradebook-app
+
+plugins:
+  - serverless-webpack
+  - serverless-iam-roles-per-function
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+
+  stage: ${opt:stage, 'dev'}
+  region: ${opt:region, 'us-east-1'}
+  logs:
+    restApi: true
+
+  environment:
+    GRADES_TABLE: Todos
+    PICTURE_S3_BUCKET: udacity-fp-attachments-${self:provider.stage}
+    SIGNED_URL_EXP: 300
+    STUDENT_ID_INDEX: StudentIdIndex
+
+functions:
+
+  Auth:
+    handler: src/lambda/auth/auth0Authorizer.handler
+
+  GetAllGradebookItems:
+    handler: src/lambda/http/getGradebookItems.handler
+    events:
+      - http:
+          method: get
+          path: gradebook
+          cors: true
+          authorizer: Auth
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - dynamodb:Query
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.GRADES_TABLE}  
+
+  CreateGradebookItem:
+    handler: src/lambda/http/createGradebookItem.handler
+    events:
+      - http:
+          method: post
+          path: gradebook
+          authorizer: Auth
+          cors: true
+          reqValidatorName: RequestBodyValidator
+          request:
+            schema:
+              application/json: ${file(src/models/create-todo-request.json)} # needs to be changed
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - dynamodb:PutItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.GRADES_TABLE}  
+
+  UpdateGradebookItem:
+    handler: src/lambda/http/updateGradebookItem.handler
+    events:
+      - http:
+          method: patch
+          path: gradebook/{studentId}
+          authorizer: Auth
+          cors: true
+          reqValidatorName: RequestBodyValidator
+          request:
+            schema:
+              application/json: ${file(src/models/update-todo-request.json)} #needs to be updated         
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - dynamodb:UpdateItem
+          - dynamodb:PutItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.GRADES_TABLE} 
+
+  DeleteGradebookItem:
+    handler: src/lambda/http/deleteGradebookItem.handler
+    events:
+      - http:
+          method: delete
+          path: gradebook/{studentId}
+          cors: true
+          authorizer: Auth
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - dynamodb:DeleteItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.GRADES_TABLE}  
+
+  GeneratePhotoUrl:
+    handler: src/lambda/http/generatePhotoUrl.handler
+    events:
+      - http:
+          method: post
+          path: gradebook/{studentId}/photo
+          cors: true
+          authorizer: Auth
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action: 
+          - s3:PutObject
+          - s3:GetObject  
+        Resource: arn:aws:s3:::${self:provider.environment.PICTURE_S3_BUCKET}/*
+      - Effect: "Allow"
+        Action:
+          - dynamodb:UpdateItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.GRADES_TABLE}  
+
+resources:
+  Resources:
+    RequestBodyValidator:
+      Type: AWS::ApiGateway::RequestValidator
+      Properties:
+        Name: 'request-body-validator'
+        RestApiId:
+          Ref: ApiGatewayRestApi
+        ValidateRequestBody: true
+        ValidateRequestParameters: false
+
+    GradesDynamoDBTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: studentId
+            AttributeType: S
+          - AttributeName: courseId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: studentId
+            KeyType: HASH
+          - AttributeName: courseId
+            KeyType: RANGE
+        BillingMode: PAY_PER_REQUEST
+        TableName: ${self:provider.environment.GRADES_TABLE}
+
+    GatewayResponseDefault4XX:
+      Type: AWS::ApiGateway::GatewayResponse
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+          gatewayresponse.header.Access-Control-Allow-Methods: "'GET,OPTIONS,POST'"
+        ResponseType: DEFAULT_4XX
+        RestApiId:
+          Ref: ApiGatewayRestApi
+
+    PictureBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:provider.environment.{PICTURE_S3_BUCKET}
+        CorsConfiguration:
+          CorsRules:
+            -
+              AllowedOrigins:
+                - '*'
+              AllowedHeaders:
+                - '*'
+              AllowedMethods:
+                - GET
+                - PUT
+                - POST
+                - DELETE
+                - HEAD
+              MaxAge: 3000
+              
+    BucketPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        PolicyDocument:
+          Id: AttachPolicy
+          Version: "2012-10-17"
+          Statement:
+            - Sid: PublicReadForGetBucketObjects
+              Effect: Allow
+              Principal: '*'
+              Action: 's3:GetObject'
+              Resource: 'arn:aws:s3:::${self:provider.environment.PICTURE_S3_BUCKET}/*'
+        Bucket: !Ref PictureBucket
+

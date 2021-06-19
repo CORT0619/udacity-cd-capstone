@@ -16,7 +16,7 @@ provider:
 
   environment:
     GRADES_TABLE: Todos
-    PICTURE_S3_BUCKET: udacity-fp-attachments-${self:provider.stage}
+    PICTURE_S3_BUCKET: udacity-capstone-gradebook-photos-${self:provider.stage}
     SIGNED_URL_EXP: 300
     STUDENT_ID_INDEX: StudentIdIndex
 
@@ -50,7 +50,7 @@ functions:
           reqValidatorName: RequestBodyValidator
           request:
             schema:
-              application/json: ${file(src/models/create-todo-request.json)} # needs to be changed
+              application/json: ${file(src/models/create-gradebook-item-request.json)}
     iamRoleStatements:
       - Effect: "Allow"
         Action:
@@ -68,7 +68,7 @@ functions:
           reqValidatorName: RequestBodyValidator
           request:
             schema:
-              application/json: ${file(src/models/update-todo-request.json)} #needs to be updated         
+              application/json: ${file(src/models/update-gradebook-item-request.json)}        
     iamRoleStatements:
       - Effect: "Allow"
         Action:
@@ -126,12 +126,12 @@ resources:
         AttributeDefinitions:
           - AttributeName: studentId
             AttributeType: S
-          - AttributeName: courseId
+          - AttributeName: instructorId
             AttributeType: S
         KeySchema:
           - AttributeName: studentId
             KeyType: HASH
-          - AttributeName: courseId
+          - AttributeName: instructorId
             KeyType: RANGE
         BillingMode: PAY_PER_REQUEST
         TableName: ${self:provider.environment.GRADES_TABLE}

@@ -1,0 +1,33 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "create-gradebook-item",
+    "type": "object",
+    "properties": {
+        "instructorId": {
+            "type": "string",
+            "minLength": 1
+        },
+        "firstName": {
+            "type": "string",
+            "minLength": 1
+        },
+        "lastName": {
+            "type": "string",
+            "minLength": 1
+        },
+        "dateOfBirth": {
+            "type": "string"
+        },
+        "finalGrade": {
+            "type":"string"
+        }
+    },
+    "required": ["firstName", "lastName", "dateOfBirth"],
+    "additionalProperties": {
+        "properties": {
+            "photoUrl": {
+                "type": "string"
+            }
+        }
+    }
+}

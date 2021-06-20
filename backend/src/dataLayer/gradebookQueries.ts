@@ -1,7 +1,7 @@
 import * as AWS from 'aws-sdk';
 const AWSXRay = require('aws-xray-sdk');
 import { DocumentClient } from 'aws-sdk/clients/dynamodb';
-import { GradebookItem } from '../models/GradebookItem';
+// import { GradebookItem } from '../models/GradebookItem';
 import { GradebookItemRequest } from '../models/GradebookItemRequest';
 import { UpdateRequest } from '../models/ModifyGradebookItem';
 

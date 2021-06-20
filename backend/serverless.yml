@@ -1,5 +1,5 @@
 service:
-  name: uacity-gradebook-app
+  name: udacity-gradebook-app
 
 plugins:
   - serverless-webpack
@@ -8,14 +8,14 @@ plugins:
 provider:
   name: aws
   runtime: nodejs12.x
-
+  profile: serverless
   stage: ${opt:stage, 'dev'}
   region: ${opt:region, 'us-east-1'}
   logs:
     restApi: true
 
   environment:
-    GRADES_TABLE: Todos
+    GRADES_TABLE: Gradebook
     PICTURE_S3_BUCKET: udacity-capstone-gradebook-photos-${self:provider.stage}
     SIGNED_URL_EXP: 300
     STUDENT_ID_INDEX: StudentIdIndex
@@ -150,7 +150,7 @@ resources:
     PictureBucket:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: ${self:provider.environment.{PICTURE_S3_BUCKET}
+        BucketName: ${self:provider.environment.PICTURE_S3_BUCKET}
         CorsConfiguration:
           CorsRules:
             -

@@ -19,7 +19,7 @@ export async function createGradebookItem(gradebookItem: GradebookItem) {
         firstName: gradebookItem.firstName,
         lastName: gradebookItem.lastName,
         dateOfBirth: gradebookItem.dateOfBirth,
-        finalGrade: gradebookItem.firstName
+        finalGrade: gradebookItem.finalGrade
     };
 
     if (gradebookItem.photoUrl) {
@@ -37,5 +37,5 @@ export async function updateGradebookItem(studentId, instructorId, gradebookItem
 }
 
 export async function updatePhotoUrl(studentId, instructorId, photoUrl: string) {
-    return await queries.updatePhotoUrl(instructorId, studentId, photoUrl);
+    return await queries.updatePhotoUrl(studentId, instructorId, photoUrl);
 }

@@ -52,7 +52,6 @@ export class EditGradebook extends React.PureComponent<
 
       this.setUploadState(UploadState.FetchingPresignedUrl)
       const photoUrl = await getPhotoUrl(this.props.auth.getIdToken(), this.props.match.params.studentId);
-      console.log('photoUrl ', photoUrl);
 
       this.setUploadState(UploadState.UploadingFile)
       await uploadFile(photoUrl, this.state.file)

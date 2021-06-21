@@ -55,6 +55,7 @@ export class GradebookItems extends React.PureComponent<GradebookItemsProps, Gra
   }
 
   handleFinalGradeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log('event.target.value ', event.target.value);
     this.setState({ finalGrade: event.target.value });
   }
 
@@ -63,6 +64,7 @@ export class GradebookItems extends React.PureComponent<GradebookItemsProps, Gra
   }
 
   onItemCreate = async (/*event: React.ChangeEvent<HTMLButtonElement>*/) => {
+    console.log('this.state ', this.state);
     try {
       const newItem = await createGradebookItem(this.props.auth.getIdToken(), {
         firstName: this.state.firstName,
@@ -193,22 +195,18 @@ export class GradebookItems extends React.PureComponent<GradebookItemsProps, Gra
           {this.state.items.map((item, pos) => {
             return (
               <Grid.Row key={item.studentId}>
-                {/* <Grid.Column width={1} verticalAlign="middle">
-                  <Checkbox
-                    onChange={() => this.onTodoCheck(pos)}
-                    checked={item.done}
-                  />
-                </Grid.Column> */}
-                <Grid.Column width={10} verticalAlign="middle">
-                  {item.firstName}
+                <Grid.Column width={2}>
+                  {item.photoUrl && (
+                    <Image src={item.photoUrl} size="mini" wrapped />
+                  )}
                 </Grid.Column>
-                <Grid.Column width={10} verticalAlign="middle">
-                  {item.lastName}
+                <Grid.Column width={5} verticalAlign="middle">
+                  {item.firstName} {item.lastName}
                 </Grid.Column>                  
-                <Grid.Column width={3} floated="right">
+                <Grid.Column width={2} floated="right">
                   {item.dateOfBirth}
                 </Grid.Column>
-                <Grid.Column width={3} floated="right">
+                <Grid.Column width={1} floated="right">
                   {item.finalGrade}
                 </Grid.Column>                  
                 <Grid.Column width={1} floated="right">
@@ -229,9 +227,6 @@ export class GradebookItems extends React.PureComponent<GradebookItemsProps, Gra
                     <Icon name="delete" />
                   </Button>
                 </Grid.Column>
-                {item.photoUrl && (
-                  <Image src={item.photoUrl} size="small" wrapped />
-                )}
                 <Grid.Column width={16}>
                   <Divider />
                 </Grid.Column>

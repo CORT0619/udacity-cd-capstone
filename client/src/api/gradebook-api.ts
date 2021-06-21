@@ -1,10 +1,10 @@
 import { apiEndpoint } from '../config'
 import { GradebookItem } from '../types/GradebookItem';
-import { CreateGradebookItemRequest } from '../types/CreateGradebookItemRequest'; // change to reference CreateGradebookItemRequest
+import { CreateGradebookItemRequest } from '../types/CreateGradebookItemRequest';
 import Axios from 'axios';
-import { UpdateGradebookItemRequest } from '../types/UpdateGradebookItemRequest'; // change to reference UpdateGradebookItemRequest
+import { UpdateGradebookItemRequest } from '../types/UpdateGradebookItemRequest';
 
-export async function getGradebookItems(idToken: string): Promise<GradebookItem[]> { // change to reference GradebookItem
+export async function getGradebookItems(idToken: string): Promise<GradebookItem[]> {
   console.log('Fetching gradebook items');
 
   const response = await Axios.get(`${apiEndpoint}/gradebook`, {
@@ -64,9 +64,8 @@ export async function getPhotoUrl(
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${idToken}`
     }
-  })
-  console.log('response ', response);
-  return response.data.photoUrl
+  });
+  return response.data.photoUrl;
 }
 
 export async function uploadFile(photoUrl: string, file: Buffer): Promise<void> {

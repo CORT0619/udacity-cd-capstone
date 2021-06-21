@@ -81,7 +81,7 @@ export class GradebookQueries {
         };
     }
 
-    async updatePhotoUrl(instructorId, studentId, photoUrl: string) {
+    async updatePhotoUrl(studentId, instructorId, photoUrl: string) {
         const request = {
             TableName: this.gradesTable,
             Key: {

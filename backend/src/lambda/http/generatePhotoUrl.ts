@@ -25,7 +25,7 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
   const attachmentUrl = `https://${process.env.PICTURE_S3_BUCKET}.s3.amazonaws.com/${photoId}`
 
   try {
-    const result = await updatePhotoUrl(instructorId, studentId, attachmentUrl);
+    const result = await updatePhotoUrl(studentId, instructorId, attachmentUrl);
     console.log('update attachments url result ', result);
 
     return {

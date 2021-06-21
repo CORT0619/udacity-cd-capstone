@@ -66,19 +66,20 @@ export class GradebookQueries {
     }
 
     async getGradebookItems(instructorId) {
+        console.log('instructorId ', instructorId);
         const itemsResult = await this.docClient.query({
             TableName: this.gradesTable,
             IndexName: this.studentIndex,
             KeyConditionExpression: 'instructorId = :instructorId',
             ExpressionAttributeValues: {
-                'instructorId': instructorId
+                ':instructorId': instructorId
             }
         }).promise();
 
         console.log('itemsResult ', itemsResult);
 
         return {
-            instructorId
+            items: itemsResult.Items
         };
     }
 

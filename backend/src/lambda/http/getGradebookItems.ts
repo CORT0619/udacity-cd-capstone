@@ -13,21 +13,25 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
 
   try {
     const result = await getAllGradebookItems(instructorId);
-    console.log('all gradebook items ', result);
     
     return {
       statusCode: 200,
       headers: {
         'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Credentials': true
+        'Access-Control-Allow-Credentials': true,
+        'Access-Control-Allow-Methods': 'OPTIONS,POST,DELETE,GET,PATCH'
       },
-      body: JSON.stringify({ items: result })
+      body: JSON.stringify({ items: result.items })
     }
   } catch (err) {
     logger.error('an error occurred retrieving todos ', { error: err });
 
     return {
       statusCode: 404,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true
+      },
       body: JSON.stringify({
         msg: 'An error has occurred.',
         error: err

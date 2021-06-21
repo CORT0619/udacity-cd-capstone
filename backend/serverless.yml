@@ -18,7 +18,7 @@ provider:
     GRADES_TABLE: Gradebook
     PICTURE_S3_BUCKET: udacity-capstone-gradebook-photos-${self:provider.stage}
     SIGNED_URL_EXP: 300
-    STUDENT_ID_INDEX: StudentIdIndex
+    # STUDENT_ID_INDEX: StudentIdIndex
 
 functions:
 
@@ -124,14 +124,14 @@ resources:
       Type: AWS::DynamoDB::Table
       Properties:
         AttributeDefinitions:
-          - AttributeName: studentId
-            AttributeType: S
           - AttributeName: instructorId
+            AttributeType: S
+          - AttributeName: studentId
             AttributeType: S
         KeySchema:
-          - AttributeName: studentId
-            KeyType: HASH
           - AttributeName: instructorId
+            KeyType: HASH
+          - AttributeName: studentId
             KeyType: RANGE
         BillingMode: PAY_PER_REQUEST
         TableName: ${self:provider.environment.GRADES_TABLE}
@@ -141,8 +141,9 @@ resources:
       Properties:
         ResponseParameters:
           gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
-          gatewayresponse.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
-          gatewayresponse.header.Access-Control-Allow-Methods: "'GET,OPTIONS,POST'"
+          # gatewayresponse.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Methods: "'GET,OPTIONS,POST,DELETE,PATCH'"
         ResponseType: DEFAULT_4XX
         RestApiId:
           Ref: ApiGatewayRestApi

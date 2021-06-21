@@ -62,18 +62,20 @@ export class GradebookItems extends React.PureComponent<GradebookItemsProps, Gra
     this.props.history.push(`/gradebook/${studentId}/edit`)
   }
 
-  onItemCreate = async (event: React.ChangeEvent<HTMLButtonElement>) => {
+  onItemCreate = async (/*event: React.ChangeEvent<HTMLButtonElement>*/) => {
     try {
       const newItem = await createGradebookItem(this.props.auth.getIdToken(), {
         firstName: this.state.firstName,
         lastName: this.state.lastName,
-        dateOfBirth: this.state.dateOfBirth
+        dateOfBirth: this.state.dateOfBirth,
+        finalGrade: this.state.finalGrade
       });
       this.setState({
         items: [...this.state.items, newItem],
         firstName: '',
         lastName: '',
-        dateOfBirth: ''
+        dateOfBirth: '',
+        finalGrade: ''
       });
     } catch {
       alert('GradebookItem creation failed')
@@ -116,7 +118,7 @@ export class GradebookItems extends React.PureComponent<GradebookItemsProps, Gra
       this.setState({
         items,
         loadingGradebook: false
-      })
+      });
     } catch (e) {
       alert(`Failed to fetch items: ${e.message}`)
     }
@@ -174,7 +176,7 @@ export class GradebookItems extends React.PureComponent<GradebookItemsProps, Gra
             />  
           </div>
 
-          <Button className="ui primary button">Add Student</Button>
+          <Button className="ui primary button" onClick={this.onItemCreate}>Add Student</Button>
                        
         </Grid.Column>
         <Grid.Column width={16}>

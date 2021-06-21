@@ -17,12 +17,10 @@ export class GradebookQueries {
     async createGradebookItem(gradebookItem: GradebookItemRequest) {
         console.log('gradebookItem ', gradebookItem);
 
-        const result = await this.docClient.put({
+        await this.docClient.put({
             TableName: this.gradesTable,
             Item: gradebookItem
         }).promise();
-
-        console.log('result ', result);
 
         return {
             gradebookItem

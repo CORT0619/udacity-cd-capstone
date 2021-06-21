@@ -70,6 +70,7 @@ export class GradebookItems extends React.PureComponent<GradebookItemsProps, Gra
         dateOfBirth: this.state.dateOfBirth,
         finalGrade: this.state.finalGrade
       });
+
       this.setState({
         items: [...this.state.items, newItem],
         firstName: '',
@@ -92,29 +93,10 @@ export class GradebookItems extends React.PureComponent<GradebookItemsProps, Gra
       alert('Todo deletion failed')
     }
   }
-/*
-  onTodoCheck = async (pos: number) => {
-    try {
-      const todo = this.state.todos[pos]
-      await patchTodo(this.props.auth.getIdToken(), todo.todoId, {
-        name: todo.name,
-        dueDate: todo.dueDate,
-        done: !todo.done
-      })
-      this.setState({
-        todos: update(this.state.todos, {
-          [pos]: { done: { $set: !todo.done } }
-        })
-      })
-    } catch {
-      alert('Todo deletion failed')
-    }
-  }*/
 
   async componentDidMount() {
     try {
-      const items = await getGradebookItems(this.props.auth.getIdToken())
-      console.log('items ', items);
+      const items = await getGradebookItems(this.props.auth.getIdToken());
       this.setState({
         items,
         loadingGradebook: false

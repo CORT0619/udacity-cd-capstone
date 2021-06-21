@@ -17,6 +17,7 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
     console.log('item ', item);
 
     const createResponse = await createGradebookItem(item);
+    console.log('createResponse ', createResponse);
 
     return {
       statusCode: 201,
@@ -25,7 +26,7 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
         'Access-Control-Allow-Credentials': true
       },
       body: JSON.stringify({
-        gradebookItem: createResponse,
+        item: createResponse.gradebookItem,
         message: 'student created successfully!'
       })
     }

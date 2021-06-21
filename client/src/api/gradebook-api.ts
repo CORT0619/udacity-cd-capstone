@@ -26,6 +26,7 @@ export async function createGradebookItem(
       'Authorization': `Bearer ${idToken}`
     }
   })
+  console.log('response ', response);
   return response.data.item;
 }
 
@@ -64,6 +65,7 @@ export async function getPhotoUrl(
       'Authorization': `Bearer ${idToken}`
     }
   })
+  console.log('response ', response);
   return response.data.photoUrl
 }
 

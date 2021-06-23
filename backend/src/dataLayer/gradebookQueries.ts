@@ -3,7 +3,9 @@ const AWSXRay = require('aws-xray-sdk');
 import { DocumentClient } from 'aws-sdk/clients/dynamodb';
 // import { GradebookItem } from '../models/GradebookItem';
 import { GradebookItemRequest } from '../models/GradebookItemRequest';
-import { UpdateRequest } from '../models/ModifyGradebookItem';
+// import { UpdateRequest } from '../models/ModifyGradebookItem';
+import { InitialUpdateRequest } from '../models/ModifyGradebookItem';
+
 
 const XAWS = AWSXRay.captureAWS(AWS);
 
@@ -36,7 +38,7 @@ export class GradebookQueries {
         };
     }
 
-    async updateGradebookItem(studentId, instructorId, gradebookItem: UpdateRequest) {
+    async updateGradebookItem(studentId, instructorId, gradebookItem: InitialUpdateRequest) {
         const request = {
             TableName: this.gradesTable,
             Key: {

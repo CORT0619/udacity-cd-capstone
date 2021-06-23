@@ -2,7 +2,8 @@ import * as uuid from 'uuid';
 import { GradebookQueries } from '../dataLayer/gradebookQueries';
 import { GradebookItem } from '../models/GradebookItem';
 import { GradebookItemRequest } from '../models/GradebookItemRequest';
-import { UpdateRequest } from '../models/ModifyGradebookItem';
+// import { UpdateRequest } from '../models/ModifyGradebookItem';
+import { InitialUpdateRequest } from '../models/ModifyGradebookItem';
 
 const queries = new GradebookQueries();
 
@@ -32,7 +33,7 @@ export async function deleteGradebookItem(studentId, instructorId)  {
     return await queries.deleteGradebookItem(studentId, instructorId);
 }
 
-export async function updateGradebookItem(studentId, instructorId, gradebookItem: UpdateRequest) {
+export async function updateGradebookItem(studentId, instructorId, gradebookItem: InitialUpdateRequest) {
     return await queries.updateGradebookItem(studentId, instructorId, gradebookItem);
 }
 

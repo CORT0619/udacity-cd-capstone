@@ -3,14 +3,6 @@
     "title": "modify-gradebook-item",
     "type": "object",
     "properties": {
-        "instructorId": {
-            "type":"string",
-            "minLength": 1
-        },
-        "studentId": {
-            "type":"string",
-            "minLength": 1
-        },
         "firstName": {
             "type": "string",
             "minLength": 1
@@ -26,6 +18,5 @@
             "type": "string"
         }
     },
-    "required": ["instructorId", "studentId"],
     "additionalProperties": false
 }

@@ -64,7 +64,6 @@ export class GradebookQueries {
     }
 
     async getGradebookItems(instructorId) {
-        console.log('instructorId ', instructorId);
         const itemsResult = await this.docClient.query({
             TableName: this.gradesTable,
             IndexName: this.studentIndex,

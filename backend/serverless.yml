@@ -1,18 +1,19 @@
-service:
-  name: udacity-gradebook-app
+service: udacity-gradebook-app
 
 plugins:
   - serverless-webpack
   - serverless-iam-roles-per-function
+  - serverless-ignore
 
 provider:
   name: aws
-  runtime: nodejs12.x
+  runtime: nodejs14.x
   profile: serverless
   stage: ${opt:stage, 'dev'}
   region: ${opt:region, 'us-east-1'}
   logs:
     restApi: true
+  lambdaHashingVersion: 20201221  
 
   environment:
     GRADES_TABLE: Gradebook
@@ -49,7 +50,7 @@ functions:
           cors: true
           reqValidatorName: RequestBodyValidator
           request:
-            schema:
+            schemas:
               application/json: ${file(src/models/create-gradebook-item-request.json)}
     iamRoleStatements:
       - Effect: "Allow"
@@ -67,7 +68,7 @@ functions:
           cors: true
           reqValidatorName: RequestBodyValidator
           request:
-            schema:
+            schemas:
               application/json: ${file(src/models/update-gradebook-item-request.json)}        
     iamRoleStatements:
       - Effect: "Allow"

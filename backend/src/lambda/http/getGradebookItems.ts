@@ -8,12 +8,12 @@ import { getAllGradebookItems } from '../../businessLogic/gradebook';
 const logger = createLogger('http');
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-  const instructorId = retrieveInstructorId(event);
-  console.log('instructorId ', instructorId);
+  // console.log('event ', event);
+  const id = retrieveInstructorId(event);
 
   try {
-    const result = await getAllGradebookItems(instructorId);
-    
+    const result = await getAllGradebookItems(id);
+
     return {
       statusCode: 200,
       headers: {
@@ -24,7 +24,7 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
       body: JSON.stringify({ items: result.items })
     }
   } catch (err) {
-    logger.error('an error occurred retrieving todos ', { error: err });
+    logger.error('an error occurred retrieving grades ', { error: err });
 
     return {
       statusCode: 404,

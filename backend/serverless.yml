@@ -2,12 +2,19 @@ service: udacity-gradebook-app
 
 plugins:
   - serverless-webpack
+  # - serverless-ignore
   - serverless-iam-roles-per-function
-  - serverless-ignore
+  
+package:
+  patterns:
+    # - '!__tests__/**'
+    - '!src/__tests__/**'
+    - '!src/__mocks__/**'
+    - '!src/__test__utils/**'
 
 provider:
   name: aws
-  runtime: nodejs14.x
+  runtime: nodejs12.x
   profile: serverless
   stage: ${opt:stage, 'dev'}
   region: ${opt:region, 'us-east-1'}

@@ -1,3 +1,4 @@
+# ignore tests
 __tests__/*
 __mocks__/*
 __test__utils/*

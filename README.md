@@ -2,6 +2,11 @@
 
 The purpose of the Udacity Gradebook Demo is to allow a select group of teachers to test the first iteration of a new state of the art gradebook system allowing teachers more control over their gradebooks like never before. The new Udacity Gradebook will allow select teachers to choose one of their classes in which to store student information including but not limited to grades, student id photos, and dates of birth. Additionlly the Udacity Gradebook program will allow teachers to give feedback while our developers continue to iterate on the development process and add features along the way. If you would like to sign up for the program please contact John at 888.888.8888 thank you!
 
+
+### Running Tests - Development Only
+
+Navigate to the backend folder and run `npm run test`
+
 ### Getting Started
 
 Navigate to the **backend** folder and run `npm install` to install all project dependencies, if you need assistance please reach out to the technical support team. 

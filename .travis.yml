@@ -18,5 +18,4 @@ before_script:
  - npm run test
 
 script:
-  - cd backend # may need to change
   - serverless deploy -v 

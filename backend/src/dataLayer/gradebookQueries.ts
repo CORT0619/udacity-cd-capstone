@@ -1,7 +1,6 @@
 import * as AWS from 'aws-sdk';
 const AWSXRay = require('aws-xray-sdk');
 import { DocumentClient } from 'aws-sdk/clients/dynamodb';
-// import { GradebookItem } from '../models/GradebookItem';
 import { GradebookItemRequest } from '../models/GradebookItemRequest';
 // import { UpdateRequest } from '../models/ModifyGradebookItem';
 import { InitialUpdateRequest } from '../models/ModifyGradebookItem';
@@ -45,18 +44,23 @@ export class GradebookQueries {
                 studentId,
                 instructorId
             },
-            // ProjectionExpression: '', // don't think this is needed - no reserved words
-            // ExpressionAttributeNames: { '': '' }, // don't think this is needed - no reserved words
-            UpdateExpression: 'set firstName=:f, lastName=:l, finalGrade=:g, photoUrl=:p',
+            UpdateExpression: 'set firstName=:f, lastName=:l',
             ExpressionAttributeValues: {
                 ":f": gradebookItem.firstName,
-                ":l": gradebookItem.lastName,
-                ":g": gradebookItem.finalGrade,
-                ":p": gradebookItem.photoUrl 
+                ":l": gradebookItem.lastName
             },
             ReturnValues: 'UPDATED_NEW'
         };
 
+        if (gradebookItem.finalGrade) {
+            request.UpdateExpression = request.UpdateExpression + ', finalGrade=:g';
+            request.ExpressionAttributeValues[":g"] = gradebookItem.finalGrade;
+        }
+
+        if (gradebookItem.photoUrl) {
+            request.UpdateExpression = request.UpdateExpression + ', photoUrl=:p';
+            request.ExpressionAttributeValues[":p"] = gradebookItem.photoUrl;
+        }
         const updateResult = await this.docClient.update(request).promise();
         console.log('updateResult ', updateResult);
 

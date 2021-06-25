@@ -1,18 +1,20 @@
 import { handler } from '../lambda/http/deleteGradebookItem';
+import { jest, describe, test, expect } from '@jest/globals';
 const eventGenerator = require('../__test__utils/eventGenerator.js');
 const gradebook = require('../businessLogic/gradebook');
 const utils = require('../lambda/utils');
 
+const studentId = '445u35h309wwh-2jk32y4u';
 const event = eventGenerator({
     body: {},
     pathParametersObject: {
-        studentId: '445u35h309wwh-2jk32y4u'
+        studentId
     }
 })
 
 describe('DeleteGradebookItem', () => {
     test('should return a successful message', async () => {
-        const body = JSON.stringify({ message:`GradebookItem 494j45k453-856u565i66 deleted successfully!` });
+        const body = JSON.stringify({ message:`GradebookItem ${studentId} deleted successfully!` });
         const returnedResponse = {
             statusCode: 200,
             headers: {

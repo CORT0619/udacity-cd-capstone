@@ -1,5 +1,6 @@
+import { jest, describe, test, expect } from '@jest/globals';
 import { handler } from '../lambda/http/getGradebookItems';
-import * as eventGenerator from '../__test__utils/eventGenerator.js';
+const eventGenerator = require('../__test__utils/eventGenerator.js');
 const utils = require('../lambda/utils');
 const gradebook = require('../businessLogic/gradebook');
 

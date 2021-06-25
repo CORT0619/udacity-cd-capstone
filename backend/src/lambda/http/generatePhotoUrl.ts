@@ -40,11 +40,21 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
     }
   } catch (e) {
     logger.error('An error occurred updating an attachmentUrl', { error: e });
+    return {
+      statusCode: 500,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true
+      },
+      body: JSON.stringify({
+        error: 'an error occurred creating a photoUrl'
+      })
+    };
   }
 }
 
-function getUploadUrl(id: string) {
-  logger.info('generating signed url...');
+export function getUploadUrl(id: string) {
+  logger.info('generating signed url...', id);
   return s3.getSignedUrl('putObject', {
     Bucket: bucketName,
     Key: id,

@@ -11,7 +11,8 @@
     "outDir": "lib"
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "src/__tests__/*.ts"
   ],
   "types": ["jest", "node"],
   "typeRoots": [

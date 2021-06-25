@@ -9,6 +9,9 @@ node_js:
 install:
   - npm install -g serverless
   - cd backend
+  - rm -rf package-lock.json npm-shrinkwrap.json node_modules
+  - npm cache clean --force
+  - npm cache verify
   - npm install
 
 before_script:

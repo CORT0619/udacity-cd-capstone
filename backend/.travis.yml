@@ -1,0 +1,19 @@
+language: node_js
+node_js:
+  - 16
+
+cache:
+  directories:
+    - node_modules
+
+install:
+  - npm install -g serverless
+  - cd backend
+  - travis_retry npm install
+
+before_script:
+ - npm run test
+
+script:
+  - cd backend # may need to change
+  - serverless deploy -v 

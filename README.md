@@ -7,6 +7,13 @@ The purpose of the Udacity Gradebook Demo is to allow a select group of teachers
 
 Navigate to the backend folder and run `npm run test`
 
+### Project - Development Team Only
+
+In order to successfully clone this project setup two environment variables in your travis ci repo settings with your aws credentials:
+
+* AWS_ACCESS_KEY_ID
+* AWS_SECRET_ACCESS_KEY
+
 ### Getting Started
 
 Navigate to the **backend** folder and run `npm install` to install all project dependencies, if you need assistance please reach out to the technical support team. 
